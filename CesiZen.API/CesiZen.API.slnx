@@ -1,3 +1,13 @@
 <Solution>
-  <Project Path="zerz/zerz.csproj" />
+  <Project Path="CesiZen.API/CesiZen.API.csproj" />
+  <Project Path="CesiZen.Constant/CesiZen.Constant.csproj" />
+  <Project Path="CesiZen.Data/CesiZen.Data.csproj" />
+  <Project Path="CesiZen.Database/CesiZen.Database.sqlproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="CesiZen.Dto/CesiZen.Dto.csproj" />
+  <Project Path="CesiZen.Model/CesiZen.Model.csproj" />
+  <Project Path="CesiZen.Repository/CesiZen.Repository.csproj" />
+  <Project Path="CesiZen.Service/CesiZen.Service.csproj" />
 </Solution>

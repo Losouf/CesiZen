@@ -10,4 +10,11 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CesiZen.Constant\CesiZen.Constant.csproj" />
+    <ProjectReference Include="..\CesiZen.Dto\CesiZen.Dto.csproj" />
+    <ProjectReference Include="..\CesiZen.Model\CesiZen.Model.csproj" />
+    <ProjectReference Include="..\CesiZen.Service\CesiZen.Service.csproj" />
+  </ItemGroup>
+
 </Project>
