@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CesiZen.Repository")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+282f473e1b517d2e3cf565f62ee2eec4b03fbbc2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aafa3aa41c83a00f53fadbf78762a05a1f40f126")]
 [assembly: System.Reflection.AssemblyProductAttribute("CesiZen.Repository")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CesiZen.Repository")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
