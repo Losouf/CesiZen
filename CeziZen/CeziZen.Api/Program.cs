@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using CesiZen.Core.Repository.UnitOfWork;
 using CesiZen.Repository.Context;
+using CesiZen.Repository.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<CesiZenContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddScoped<IUnitOfWork, CesiZen.Repository.UnitOfWork.UnitOfWork>();
 
 // Add services to the container.
 

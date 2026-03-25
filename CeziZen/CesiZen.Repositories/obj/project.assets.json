@@ -683,6 +683,16 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
+      "CesiZen.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/CesiZen.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CesiZen.Core.dll": {}
+        }
+      },
       "CesiZen.Model/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
@@ -1680,6 +1690,11 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "CesiZen.Core/1.0.0": {
+      "type": "project",
+      "path": "../CesiZen.Core/CesiZen.Core.csproj",
+      "msbuildProject": "../CesiZen.Core/CesiZen.Core.csproj"
+    },
     "CesiZen.Model/1.0.0": {
       "type": "project",
       "path": "../CesiZen.Model/CesiZen.Model.csproj",
@@ -1688,6 +1703,7 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "CesiZen.Core >= 1.0.0",
       "CesiZen.Model >= 1.0.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 10.0.5"
     ]
@@ -1725,6 +1741,9 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
+            "C:\\Users\\livio\\Desktop\\CesiZen\\CeziZen\\CesiZen.Core\\CesiZen.Core.csproj": {
+              "projectPath": "C:\\Users\\livio\\Desktop\\CesiZen\\CeziZen\\CesiZen.Core\\CesiZen.Core.csproj"
+            },
             "C:\\Users\\livio\\Desktop\\CesiZen\\CeziZen\\CesiZen.Model\\CesiZen.Model.csproj": {
               "projectPath": "C:\\Users\\livio\\Desktop\\CesiZen\\CeziZen\\CesiZen.Model\\CesiZen.Model.csproj"
             }

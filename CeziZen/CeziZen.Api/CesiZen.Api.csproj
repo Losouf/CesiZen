@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CesiZen.Core\CesiZen.Core.csproj" />
     <ProjectReference Include="..\CesiZen.Repositories\CesiZen.Repository.csproj" />
   </ItemGroup>
 

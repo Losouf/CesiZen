@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CesiZen.Core\CesiZen.Core.csproj" />
     <ProjectReference Include="..\CesiZen.Model\CesiZen.Model.csproj" />
   </ItemGroup>
 
