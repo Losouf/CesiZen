@@ -8,6 +8,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CesiZen.Model\CesiZen.Model.csproj" />
+    <ProjectReference Include="..\CesiZen.Data\CesiZen.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
   </ItemGroup>
 
 </Project>

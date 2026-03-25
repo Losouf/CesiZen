@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import AuthLayout from './AuthLayout';
 import styles from './Auth.module.css';
+import { authService } from '../../services/authService';
 
 const MailIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10z"/><path d="m22 7-10 7L2 7"/></svg>
@@ -13,15 +15,34 @@ const LockIcon = () => (
 );
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      await authService.login(email, password);
+      navigate('/'); // Redirect to home/dashboard
+    } catch (err: any) {
+      setError(err.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <AuthLayout 
-      title="CesiZen"
-      subtitle="Connectez-vous pour retrouver votre sérénité."
+      title="Go ahead and set up your account"
+      subtitle="Sign in to enjoy the best managing experience"
     >
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column' }}>
+        {error && <div style={{ color: 'var(--error)', marginBottom: '1rem', textAlign: 'center', fontSize: '0.875rem' }}>{error}</div>}
+        
         <div className={styles.animateIn} style={{ animationDelay: '0.1s' }}>
           <Input 
             placeholder="E-mail ID" 
@@ -29,6 +50,7 @@ const Login: React.FC = () => {
             icon={<MailIcon />}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
         
@@ -39,6 +61,7 @@ const Login: React.FC = () => {
             icon={<LockIcon />}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
         
@@ -50,9 +73,11 @@ const Login: React.FC = () => {
         </div>
 
         <div className={styles.animateIn} style={{ animationDelay: '0.4s' }}>
-          <Button type="submit">Login</Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? 'Signing in...' : 'Login'}
+          </Button>
         </div>
-      </div>
+      </form>
     </AuthLayout>
   );
 };

@@ -9,6 +9,11 @@
   <ItemGroup>
     <ProjectReference Include="..\CesiZen.Model\CesiZen.Model.csproj" />
     <ProjectReference Include="..\CesiZen.Repository\CesiZen.Repository.csproj" />
+    <ProjectReference Include="..\CesiZen.Dto\CesiZen.Dto.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
   </ItemGroup>
 
 </Project>

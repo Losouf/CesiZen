@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0-preview.2.25159.112" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5" />
   </ItemGroup>
 
@@ -15,6 +17,8 @@
     <ProjectReference Include="..\CesiZen.Dto\CesiZen.Dto.csproj" />
     <ProjectReference Include="..\CesiZen.Model\CesiZen.Model.csproj" />
     <ProjectReference Include="..\CesiZen.Service\CesiZen.Service.csproj" />
+    <ProjectReference Include="..\CesiZen.Data\CesiZen.Data.csproj" />
+    <ProjectReference Include="..\CesiZen.Repository\CesiZen.Repository.csproj" />
   </ItemGroup>
 
 </Project>

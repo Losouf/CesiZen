@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import AuthLayout from './AuthLayout';
 import styles from './Auth.module.css';
+import { authService } from '../../services/authService';
 
 const UserIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -17,19 +19,43 @@ const LockIcon = () => (
 );
 
 const Register: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    try {
+      await authService.register(formData.username, formData.email, formData.password);
+      navigate('/');
+    } catch (err: any) {
+      setError(err.message || 'Registration failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <AuthLayout 
-      title="CesiZen"
-      subtitle="Créez votre compte et commencez votre voyage."
+      title="Create your account"
+      subtitle="Sign up to enjoy the best managing experience"
     >
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column' }}>
+        {error && <div style={{ color: 'var(--error)', marginBottom: '1rem', textAlign: 'center', fontSize: '0.875rem' }}>{error}</div>}
+
         <div className={styles.animateIn} style={{ animationDelay: '0.1s' }}>
           <Input 
             placeholder="Full Name" 
@@ -37,6 +63,7 @@ const Register: React.FC = () => {
             icon={<UserIcon />}
             value={formData.username}
             onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+            required
           />
         </div>
         
@@ -47,6 +74,7 @@ const Register: React.FC = () => {
             icon={<MailIcon />}
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            required
           />
         </div>
         
@@ -57,6 +85,7 @@ const Register: React.FC = () => {
             icon={<LockIcon />}
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            required
           />
         </div>
         
@@ -67,13 +96,16 @@ const Register: React.FC = () => {
             icon={<LockIcon />}
             value={formData.confirmPassword}
             onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+            required
           />
         </div>
         
         <div className={styles.animateIn} style={{ animationDelay: '0.3s' }}>
-          <Button type="submit">Register</Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? 'Creating account...' : 'Register'}
+          </Button>
         </div>
-      </div>
+      </form>
     </AuthLayout>
   );
 };
