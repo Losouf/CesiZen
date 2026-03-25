@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CesiZen.Model\CesiZen.Model.csproj" />
+    <ProjectReference Include="..\CesiZen.Repository\CesiZen.Repository.csproj" />
+  </ItemGroup>
+
 </Project>

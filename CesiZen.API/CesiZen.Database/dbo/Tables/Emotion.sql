@@ -1,7 +1,6 @@
 ﻿CREATE TABLE [dbo].[Emotion] (
     [Id]              INT           IDENTITY (1, 1) NOT NULL,
     [Label]           VARCHAR (100) NOT NULL,
-    [Level]           INT           DEFAULT ((1)) NOT NULL,
     [Color]           VARCHAR (7)   NULL,
     [ParentId]        INT           NULL,
     [CreatedByUserId] INT           NULL,
