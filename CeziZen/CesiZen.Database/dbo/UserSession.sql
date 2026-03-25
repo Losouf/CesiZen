@@ -1,0 +1,12 @@
+﻿CREATE TABLE [dbo].[UserSession] (
+    [Id] INT IDENTITY(1,1) NOT NULL,
+    [Token] VARCHAR(MAX) NOT NULL,
+    [JwtId] VARCHAR(255) NOT NULL,
+    [IsUsed] BIT NOT NULL DEFAULT 0, 
+    [IsRevoked] BIT NOT NULL DEFAULT 0,
+    [CreatedAt] DATETIME2 NOT NULL DEFAULT GETDATE(),
+    [ExpiresAt] DATETIME2 NOT NULL,
+    [UserId] INT NOT NULL,
+    CONSTRAINT [PK_UserSession] PRIMARY KEY CLUSTERED ([Id]),
+    CONSTRAINT [FK_UserSession_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[User] ([Id]) ON DELETE CASCADE
+);

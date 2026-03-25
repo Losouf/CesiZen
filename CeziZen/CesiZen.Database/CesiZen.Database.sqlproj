@@ -56,5 +56,18 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="dbo" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Emotion.sql" />
+    <Build Include="dbo\FavoriteArticle.sql" />
+    <Build Include="dbo\InfoArticle.sql" />
+    <Build Include="dbo\IntensityLevel.sql" />
+    <Build Include="dbo\JournalEntry.sql" />
+    <Build Include="dbo\Permission.sql" />
+    <Build Include="dbo\Role.sql" />
+    <Build Include="dbo\RolePermission.sql" />
+    <Build Include="dbo\User.sql" />
+    <Build Include="dbo\UserSession.sql" />
   </ItemGroup>
 </Project>
