@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CesiZen.Dto")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+282f473e1b517d2e3cf565f62ee2eec4b03fbbc2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+86f8a18fdb0695942ffe032dd64086b7d36eace7")]
 [assembly: System.Reflection.AssemblyProductAttribute("CesiZen.Dto")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CesiZen.Dto")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

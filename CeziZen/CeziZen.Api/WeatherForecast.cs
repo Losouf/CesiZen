@@ -1,4 +1,4 @@
-namespace CeziZen.Api
+namespace CesiZen.Api
 {
     public class WeatherForecast
     {

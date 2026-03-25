@@ -1,4 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using CesiZen.Repository.Context;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<CesiZenContext>(options =>
+    options.UseSqlServer(connectionString));
 
 // Add services to the container.
 

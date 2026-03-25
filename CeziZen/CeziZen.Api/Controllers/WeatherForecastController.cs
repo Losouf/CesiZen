@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace CeziZen.Api.Controllers
+namespace CesiZen.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
