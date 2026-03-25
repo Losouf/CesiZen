@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useMotionValue, useDragControls, animate } from 'framer-motion';
+import { motion, useMotionValue, animate } from 'framer-motion';
 import Sidebar from '../../components/Sidebar';
 import Header from '../../components/Header';
 import styles from './Home.module.css';
 
 const Home: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const dragControls = useDragControls();
   const drawerProgress = useMotionValue(1); // 1 = closed, 0 = open
 
   useEffect(() => {
@@ -44,6 +43,22 @@ const Home: React.FC = () => {
 
   return (
     <div className={styles.layout}>
+      {/* Global Edge Trigger for swiping anywhere on the right edge */}
+      <motion.div 
+        className={styles.edgeTrigger}
+        onPan={(_, info) => {
+          const progress = Math.min(1, Math.max(0, 1 + info.offset.x / 300));
+          drawerProgress.set(progress);
+        }}
+        onPanEnd={(_, info) => {
+          if (drawerProgress.get() < 0.5 || info.velocity.x < -300) {
+            setIsMenuOpen(true);
+          } else {
+            drawerProgress.set(1);
+          }
+        }}
+      />
+
       {/* Background Animated Orbs (like AuthLayout) */}
       <div className={styles.bgAnimation}>
         <div className={`${styles.orb} ${styles.orb1}`}></div>
@@ -51,18 +66,29 @@ const Home: React.FC = () => {
       </div>
 
       <Header 
-        onMenuToggle={() => {
-          console.log('Menu Toggle Clicked', !isMenuOpen);
-          setIsMenuOpen(!isMenuOpen);
-        }} 
-        drawerProgress={drawerProgress}
+        onMenuToggle={() => setIsMenuOpen(!isMenuOpen)} 
         greeting={`Bon retour, ${username} 👋`}
         subtitle="Prêt pour une nouvelle séance de bien-être ?"
       />
       <Sidebar 
         onClose={() => setIsMenuOpen(false)}
-        dragControls={dragControls}
         progress={drawerProgress}
+      />
+
+      {/* Global Edge Trigger for swiping anywhere on the right edge */}
+      <motion.div 
+        className={styles.edgeTrigger}
+        onPan={(_, info) => {
+          const progress = Math.min(1, Math.max(0, 1 + info.offset.x / 300));
+          drawerProgress.set(progress);
+        }}
+        onPanEnd={(_, info) => {
+          if (drawerProgress.get() < 0.5 || info.velocity.x < -300) {
+            setIsMenuOpen(true);
+          } else {
+            drawerProgress.set(1);
+          }
+        }}
       />
 
       <main className={styles.cardContent}>
@@ -121,6 +147,29 @@ const Home: React.FC = () => {
           </div>
         </div>
       </main>
+
+      {/* Unified Interaction Layer: Swipe (everywhere) and Tap (top right) */}
+      <motion.div 
+        className={styles.edgeTrigger}
+        onPan={(_, info) => {
+          const progress = Math.min(1, Math.max(0, 1 + info.offset.x / 300));
+          drawerProgress.set(progress);
+        }}
+        onPanEnd={(_, info) => {
+          if (drawerProgress.get() < 0.5 || info.velocity.x < -300) {
+            setIsMenuOpen(true);
+          } else {
+            drawerProgress.set(1);
+          }
+        }}
+        onTap={(_, info) => {
+          // If tap is in the header area (top 15% of screen or 100px)
+          if (info.point.y < 120) {
+            setIsMenuOpen(!isMenuOpen);
+          }
+        }}
+        style={{ zIndex: 1100 }}
+      />
     </div>
   );
 };

@@ -194,3 +194,14 @@
     min-width: calc(33.33% - 1rem);
   }
 }
+
+.edgeTrigger {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 100vh;
+  z-index: 1100;
+  background: transparent;
+  touch-action: none;
+}

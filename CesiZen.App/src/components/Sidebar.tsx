@@ -1,12 +1,11 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { motion, DragControls, MotionValue, useTransform, animate } from 'framer-motion';
+import { motion, MotionValue, useTransform, animate } from 'framer-motion';
 import { authService } from '../services/authService';
 import styles from './Sidebar.module.css';
 
 interface SidebarProps {
   onClose: () => void;
-  dragControls: DragControls;
   progress: MotionValue<number>;
 }
 
@@ -34,7 +33,7 @@ const CloseIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 );
 
-const Sidebar: React.FC<SidebarProps> = ({ onClose, dragControls, progress }) => {
+const Sidebar: React.FC<SidebarProps> = ({ onClose, progress }) => {
   const navigate = useNavigate();
   
   // Link x position to progress (0 => 0%, 1 => 100%)
@@ -58,20 +57,18 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, dragControls, progress }) =>
       />
       <motion.aside 
         style={{ x }}
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }} 
-        dragElastic={0}
-        onDrag={(_, info) => {
-          // Convert drag pixels to 0-1 progress (assuming 300px width)
+        onPan={(_, info) => {
+          // Convert pan offset to 0-1 progress (assuming 300px width)
+          // info.offset.x is positive when moving right (closing)
           const newProgress = Math.min(1, Math.max(0, info.offset.x / 300));
           progress.set(newProgress);
         }}
-        onDragEnd={(_, info) => {
-          // If we dragged more than half way closed or fast enough to the right
+        onPanEnd={(_, info) => {
+          // If we panned more than half way closed or fast enough to the right
           if (progress.get() > 0.5 || info.velocity.x > 300) {
             onClose();
           } else {
-            // Snap back to open if we didn't drag enough
+            // Snap back to open if we didn't pan enough
             animate(progress, 0, { type: 'spring', stiffness: 400, damping: 40 });
           }
         }}

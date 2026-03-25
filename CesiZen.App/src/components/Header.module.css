@@ -4,50 +4,41 @@
   left: 0;
   width: 100%;
   padding: 1rem 1.5rem;
-  z-index: 900;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
 }
 
 .topBar {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   width: 100%;
 }
 
 .dashboardHeader {
-  padding-top: 2rem;
+  padding-top: 1.5rem;
   position: relative;
   z-index: 10;
 }
 
-.logoText {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: #1e293b;
-}
-
-.dashboardHeader .logoText {
-  color: white;
-}
-
 .greetingSection {
-  margin-top: 2.5rem;
-  padding-bottom: 1rem;
+  margin-top: 0;
+  padding-bottom: 0.5rem;
+  flex: 1;
 }
 
 .greeting {
-  font-size: 2.25rem;
+  font-size: 1.5rem;
   font-weight: 800;
   color: white;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   letter-spacing: -0.02em;
 }
 
 .subtitle {
   color: rgba(255, 255, 255, 0.7);
-  font-size: 1rem;
+  font-size: 0.875rem;
 }
 
 .burgerButton {
@@ -64,7 +55,7 @@
   backdrop-filter: blur(8px);
   position: relative;
   z-index: 950;
-  pointer-events: auto;
+  pointer-events: none; /* Let the trigger layer handle interaction */
 }
 
 .dashboardHeader .burgerButton {
@@ -75,15 +66,3 @@
 .burgerButton:hover {
   background: rgba(255, 255, 255, 0.2);
 }
-
-.edgeTrigger {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 20px;
-  height: 100vh;
-  z-index: 850;
-  background: transparent;
-  touch-action: none;
-}
-
