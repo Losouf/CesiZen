@@ -1,0 +1,70 @@
+:root {
+  /* Lighter, Soothing Blue & Indigo Palette */
+  --primary: #3b82f6; 
+  --primary-gradient: linear-gradient(135deg, #60a5fa, #2563eb);
+  --secondary: #94a3b8;
+  
+  --bg-dark: #0f172a; 
+  /* Softer, more atmospheric gradient */
+  --bg-gradient: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  
+  --card-bg: #ffffff;
+  --card-header-bg: #f8fafc;
+  
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --text-white: #ffffff;
+  
+  --input-bg: #f8fafc;
+  --input-border: #e2e8f0;
+  
+  --error: #f43f5e;
+  --success: #10b981;
+  
+  /* Modern Tokens */
+  --radius-button: 2rem;
+  --radius-card: 3rem; /* Even more rounded */
+  --radius-input: 1.25rem;
+  
+  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Outfit', sans-serif; /* Premium Font */
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+/* Typography */
+h1 { 
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.25rem; 
+  font-weight: 700; 
+  color: var(--text-white); 
+  letter-spacing: -0.02em;
+}
+
+p { 
+  font-size: 1rem; 
+  color: rgba(255, 255, 255, 0.8); 
+  font-weight: 400;
+}
+
+button { cursor: pointer; border: none; font-family: inherit; }
+input { font-family: inherit; }
