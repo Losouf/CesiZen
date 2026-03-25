@@ -1,0 +1,11 @@
+<Solution>
+  <Project Path="CesiZen.Database/CesiZen.Database.sqlproj" Id="0de67861-a076-4878-a355-6673907a3d7c">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="CesiZen.Dto/CesiZen.Dto.csproj" />
+  <Project Path="CesiZen.Model/CesiZen.Model.csproj" />
+  <Project Path="CesiZen.Repositories/CesiZen.Repository.csproj" />
+  <Project Path="CesiZen.Service/CesiZen.Service.csproj" />
+  <Project Path="CeziZen.Api/CeziZen.Api.csproj" />
+</Solution>
