@@ -1,4 +1,4 @@
-const API_URL = 'https://localhost:7001/api';
+const API_URL = `${window.location.protocol}//${window.location.hostname}:5000/api`;
 
 export interface AuthResponse {
   token: string;

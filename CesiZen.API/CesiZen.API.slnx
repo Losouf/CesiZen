@@ -2,7 +2,7 @@
   <Project Path="CesiZen.API/CesiZen.API.csproj" />
   <Project Path="CesiZen.Constant/CesiZen.Constant.csproj" />
   <Project Path="CesiZen.Data/CesiZen.Data.csproj" />
-  <Project Path="CesiZen.Database/CesiZen.Database.sqlproj">
+  <Project Path="CesiZen.Database/CesiZen.Database.sqlproj" Id="e4f4cc64-dc65-479f-a5d4-ddcfad268bc8">
     <Build />
     <Deploy />
   </Project>

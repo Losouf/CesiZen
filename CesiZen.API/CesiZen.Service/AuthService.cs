@@ -43,7 +43,6 @@ public class AuthService : IAuthService
             Email = request.Email,
             PasswordHash = BC.HashPassword(request.Password),
             DisplayName = request.DisplayName ?? request.Username,
-            RoleId = 1, // Assumption: 1 is the default User role
             CreatedAt = DateTime.UtcNow
         };
 
