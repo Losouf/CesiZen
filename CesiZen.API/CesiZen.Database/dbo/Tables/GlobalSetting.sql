@@ -1,0 +1,8 @@
+CREATE TABLE [dbo].[GlobalSetting]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY,
+    [Key] NVARCHAR(100) NOT NULL UNIQUE,
+    [Value] NVARCHAR(MAX) NOT NULL,
+    [Description] NVARCHAR(500) NULL,
+    [LastUpdated] DATETIME2 NOT NULL DEFAULT (getdate())
+)

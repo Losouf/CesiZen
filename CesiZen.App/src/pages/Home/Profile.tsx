@@ -1,73 +1,89 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  User, 
+  Bell, 
+  LifeBuoy, 
+  LogOut, 
+  ChevronRight,
+  ShieldCheck,
+  Clock
+} from 'lucide-react';
 import DashboardLayout from '../../components/DashboardLayout';
-import styles from './Home.module.css';
+import { authService, type UserInfo } from '../../services/authService';
+import styles from './Profile.module.css';
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState<UserInfo | null>(null);
+
+  useEffect(() => {
+    authService.getCurrentUser()
+      .then(setUser)
+      .catch(() => {
+        // Fallback to logout if user cannot be fetched
+        authService.logout();
+        navigate('/login');
+      });
+  }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
+    authService.logout();
     navigate('/login');
   };
 
   const sections = [
-    { title: "Informations personnelles", icon: "👤" },
-    { title: "Paramètres de confidentialité", icon: "🔒" },
-    { title: "Notifications", icon: "🔔" },
-    { title: "Aide & Support", icon: "🎧" }
+    { title: "Informations personnelles", icon: User, color: "#3b82f6", path: "/profile/info" },
+    { title: "Paramètres de confidentialité", icon: ShieldCheck, color: "#10b981", path: "/profile/privacy" },
+    { title: "Notifications", icon: Bell, color: "#f59e0b", path: "/profile/notifications" },
+    { title: "Aide & Support", icon: LifeBuoy, color: "#6366f1", path: "/profile/help" }
   ];
+
+  if (!user) return null;
 
   return (
     <DashboardLayout 
       title="Mon Profil" 
       subtitle="Gérer vos paramètres et vos données"
     >
-      <div className={styles.widgets}>
-        <section className={styles.activityCard}>
-          <div className={styles.widgetCard}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem' }}>
-              <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'var(--bg-gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', color: 'white' }}>
-                L
-              </div>
-              <div>
-                <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b' }}>Livio</h2>
-                <p style={{ color: '#64748b' }}>Utilisateur Zen depuis Mars 2026</p>
-              </div>
-            </div>
-
-            <div className={styles.activityList}>
-              {sections.map((section, index) => (
-                <div key={index} className={styles.activityItem} style={{ cursor: 'pointer' }}>
-                  <div className={styles.activityIcon}>{section.icon}</div>
-                  <div className={styles.activityInfo}>
-                    <h4 style={{ margin: 0 }}>{section.title}</h4>
-                  </div>
-                  <div style={{ marginLeft: 'auto', color: '#cbd5e1' }}>›</div>
-                </div>
-              ))}
+      <div className={styles.container}>
+        <div className={styles.profileHeader}>
+          <div className={styles.avatar}>
+            {user.username.charAt(0).toUpperCase()}
+          </div>
+          <div className={styles.userInfo}>
+            <h2 className={styles.userName}>{user.displayName || user.username}</h2>
+            <div className={styles.userBadge}>
+              <Clock size={14} />
+              <span>Membre actif</span>
             </div>
           </div>
-        </section>
+        </div>
+
+        <div className={styles.sectionList}>
+          {sections.map((section, index) => (
+            <div 
+              key={index} 
+              className={styles.sectionItem}
+              onClick={() => navigate(section.path)}
+            >
+              <div className={styles.iconWrapper} style={{ backgroundColor: `${section.color}15`, color: section.color }}>
+                <section.icon size={22} strokeWidth={2.5} />
+              </div>
+              <div className={styles.sectionInfo}>
+                <h4>{section.title}</h4>
+              </div>
+              <ChevronRight className={styles.chevron} size={20} />
+            </div>
+          ))}
+        </div>
 
         <button 
           onClick={handleLogout}
-          style={{
-            width: '100%',
-            padding: '1.25rem',
-            borderRadius: '1rem',
-            background: '#fee2e2',
-            color: '#ef4444',
-            border: 'none',
-            fontSize: '1rem',
-            fontWeight: '700',
-            cursor: 'pointer',
-            transition: 'background 0.2s'
-          }}
-          onMouseOver={(e) => (e.currentTarget.style.background = '#fecaca')}
-          onMouseOut={(e) => (e.currentTarget.style.background = '#fee2e2')}
+          className={styles.logoutButton}
         >
-          Déconnexion
+          <LogOut size={20} strokeWidth={2.5} />
+          <span>Déconnexion</span>
         </button>
       </div>
     </DashboardLayout>

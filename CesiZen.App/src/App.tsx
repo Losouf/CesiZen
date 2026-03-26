@@ -5,6 +5,10 @@ import Home from './pages/Home/Home';
 import Stats from './pages/Home/Stats';
 import Articles from './pages/Home/Articles';
 import Profile from './pages/Home/Profile';
+import ProfileInfo from './pages/Home/ProfileInfo';
+import ProfilePrivacy from './pages/Home/ProfilePrivacy';
+import ProfileNotifications from './pages/Home/ProfileNotifications';
+import ProfileHelp from './pages/Home/ProfileHelp';
 import NotFound from './pages/NotFound/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
@@ -61,6 +65,38 @@ function App() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/profile/info" 
+            element={
+              <ProtectedRoute>
+                <ProfileInfo />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/profile/privacy" 
+            element={
+              <ProtectedRoute>
+                <ProfilePrivacy />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/profile/notifications" 
+            element={
+              <ProtectedRoute>
+                <ProfileNotifications />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/profile/help" 
+            element={
+              <ProtectedRoute>
+                <ProfileHelp />
               </ProtectedRoute>
             } 
           />

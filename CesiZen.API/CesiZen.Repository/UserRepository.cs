@@ -31,12 +31,18 @@ public class UserRepository : IUserRepository
     {
         return await _context.Users
             .Include(u => u.Role)
+            .Include(u => u.UserPreferences)
             .FirstOrDefaultAsync(u => u.Id == id);
     }
 
     public async Task AddAsync(User user)
     {
         await _context.Users.AddAsync(user);
+    }
+
+    public void Update(User user)
+    {
+        _context.Users.Update(user);
     }
 
     public async Task SaveChangesAsync()

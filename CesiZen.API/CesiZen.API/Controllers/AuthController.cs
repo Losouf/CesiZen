@@ -47,4 +47,30 @@ public class AuthController : ControllerBase
 
         return Ok(userInfo);
     }
+
+    [Authorize]
+    [HttpPut("me/profile")]
+    public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto request)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId)) return Unauthorized();
+
+        var result = await _authService.UpdateProfileAsync(userId, request);
+        if (!result) return NotFound("User not found.");
+
+        return Ok(new { message = "Profile updated successfully" });
+    }
+
+    [Authorize]
+    [HttpPut("me/preferences")]
+    public async Task<IActionResult> UpdatePreferences([FromBody] UserPreferenceDto request)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId)) return Unauthorized();
+
+        var result = await _authService.UpdatePreferencesAsync(userId, request);
+        if (!result) return NotFound("User not found.");
+
+        return Ok(new { message = "Preferences updated successfully" });
+    }
 }

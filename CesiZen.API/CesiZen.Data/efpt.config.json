@@ -27,6 +27,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[GlobalSetting]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[InfoArticle]",
          "ObjectType": 0
       },
@@ -48,6 +52,10 @@
       },
       {
          "Name": "[dbo].[User]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserPreference]",
          "ObjectType": 0
       },
       {

@@ -56,7 +56,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   }, [scrollY, headerScrollProgress]);
 
   const username = user?.displayName || user?.username || "...";
-  const greetingText = showGreeting ? `Bon retour, ${username} 👋` : (title || "CesiZen");
+  const greetingText = showGreeting ? `Bon retour, ${username}` : (title || "CesiZen");
 
   return (
     <div className={styles.layout}>

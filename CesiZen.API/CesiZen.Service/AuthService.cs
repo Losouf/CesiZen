@@ -60,21 +60,74 @@ public class AuthService : IAuthService
         var user = await _userRepository.GetByIdAsync(userId);
         if (user == null) return null;
 
+        var prefs = user.UserPreferences.FirstOrDefault();
+
         return new UserInfoDto
         {
             Id = user.Id,
             Username = user.Username,
             Email = user.Email,
             DisplayName = user.DisplayName,
+            Bio = user.Bio,
+            Phone = user.Phone,
+            BirthDate = user.BirthDate,
+            ProfilePictureUrl = user.ProfilePictureUrl,
             Role = user.Role?.Label,
-            CreatedAt = user.CreatedAt
+            CreatedAt = user.CreatedAt,
+            Preferences = prefs != null ? new UserPreferenceDto
+            {
+                EmailNotifications = prefs.EmailNotifications,
+                PushNotifications = prefs.PushNotifications,
+                DarkTheme = prefs.DarkTheme,
+                IsProfilePublic = prefs.IsProfilePublic,
+                Language = prefs.Language
+            } : null
         };
+    }
+
+    public async Task<bool> UpdateProfileAsync(int userId, UpdateProfileDto request)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null) return false;
+
+        user.DisplayName = request.DisplayName;
+        user.Bio = request.Bio;
+        user.Phone = request.Phone;
+        user.BirthDate = request.BirthDate;
+        user.ProfilePictureUrl = request.ProfilePictureUrl;
+
+        _userRepository.Update(user);
+        await _userRepository.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdatePreferencesAsync(int userId, UserPreferenceDto request)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null) return false;
+
+        var prefs = user.UserPreferences.FirstOrDefault();
+        if (prefs == null)
+        {
+            prefs = new CesiZen.Data.CesiZen.Model.UserPreference { UserId = userId };
+            user.UserPreferences.Add(prefs);
+        }
+
+        prefs.EmailNotifications = request.EmailNotifications;
+        prefs.PushNotifications = request.PushNotifications;
+        prefs.DarkTheme = request.DarkTheme;
+        prefs.IsProfilePublic = request.IsProfilePublic;
+        prefs.Language = request.Language;
+
+        _userRepository.Update(user);
+        await _userRepository.SaveChangesAsync();
+        return true;
     }
 
     private AuthResponseDto GenerateAuthResponse(User user)
     {
         var jwtSettings = _configuration.GetSection("Jwt");
-        var key = Encoding.ASCII.GetBytes(jwtSettings["Key"] ?? "a_very_secret_key_that_is_at_least_32_chars_long");
+        var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
         
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenDescriptor = new SecurityTokenDescriptor

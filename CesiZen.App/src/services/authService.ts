@@ -7,13 +7,26 @@ export interface AuthResponse {
   expiresAt: string;
 }
 
+export interface UserPreference {
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  darkTheme: boolean;
+  isProfilePublic: boolean;
+  language: string;
+}
+
 export interface UserInfo {
   id: number;
   username: string;
   email: string;
   displayName?: string;
+  bio?: string;
+  phone?: string;
+  birthDate?: string;
+  profilePictureUrl?: string;
   role?: string;
   createdAt?: string;
+  preferences?: UserPreference;
 }
 
 export const authService = {
@@ -83,7 +96,45 @@ export const authService = {
     return localStorage.getItem('token');
   },
 
+  async updateProfile(data: Partial<UserInfo>): Promise<void> {
+    const token = this.getToken();
+    if (!token) throw new Error('No token found');
+
+    const response = await fetch(`${API_URL}/auth/me/profile`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(error || 'Failed to update profile');
+    }
+  },
+
+  async updatePreferences(data: UserPreference): Promise<void> {
+    const token = this.getToken();
+    if (!token) throw new Error('No token found');
+
+    const response = await fetch(`${API_URL}/auth/me/preferences`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(error || 'Failed to update preferences');
+    }
+  },
+
   isAuthenticated() {
     return !!this.getToken();
   }
-};
+}
