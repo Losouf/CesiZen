@@ -3,28 +3,32 @@
   top: 0;
   left: 0;
   width: 100%;
-  padding: 1rem 1.5rem;
+  padding: 0 1.5rem;
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  justify-content: center; /* Center topBar vertically */
+  transition: all 0.3s ease;
+  background: transparent;
+  backdrop-filter: blur(12px);
 }
 
 .topBar {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
+  height: 100%;
 }
 
 .dashboardHeader {
-  padding-top: 1.5rem;
-  position: relative;
-  z-index: 10;
+  padding-top: 0;
+  transition: all 0.3s ease;
 }
 
 .greetingSection {
   margin-top: 0;
-  padding-bottom: 0.5rem;
+  padding: 0.5rem 0;
   flex: 1;
 }
 
@@ -55,7 +59,6 @@
   backdrop-filter: blur(8px);
   position: relative;
   z-index: 950;
-  pointer-events: none; /* Let the trigger layer handle interaction */
 }
 
 .dashboardHeader .burgerButton {

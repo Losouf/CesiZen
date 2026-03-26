@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useMotionValue, animate } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useMotionValue, animate, useScroll, useTransform } from 'framer-motion';
 import Sidebar from '../../components/Sidebar';
 import Header from '../../components/Header';
 import styles from './Home.module.css';
@@ -7,6 +7,16 @@ import styles from './Home.module.css';
 const Home: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const drawerProgress = useMotionValue(1); // 1 = closed, 0 = open
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Track scroll inside the layout container
+  const { scrollY } = useScroll({
+    container: containerRef
+  });
+
+  // Transform scroll position to a 0-1 progress for the header shrinkage
+  // Shrink over the first 100px of scroll
+  const headerScrollProgress = useTransform(scrollY, [0, 100], [0, 1]);
 
   useEffect(() => {
     // Animate the progress value smoothly
@@ -19,19 +29,17 @@ const Home: React.FC = () => {
   }, [isMenuOpen, drawerProgress]);
 
   useEffect(() => {
-    // Save original background and set for dashboard
     const originalBg = document.body.style.background;
     document.body.style.background = '#f8fafc';
     document.body.style.color = '#1e293b';
-    
+
     return () => {
-      // Restore original when leaving
       document.body.style.background = originalBg;
       document.body.style.color = '';
     };
   }, []);
-  // In a real app, we would get this from context/authService
-  const username = "Livio"; 
+
+  const username = "Livio";
 
   const moods = [
     { icon: "😊", label: "Heureux" },
@@ -43,62 +51,32 @@ const Home: React.FC = () => {
 
   return (
     <div className={styles.layout}>
-      {/* Global Edge Trigger for swiping anywhere on the right edge */}
-      <motion.div 
-        className={styles.edgeTrigger}
-        onPan={(_, info) => {
-          const progress = Math.min(1, Math.max(0, 1 + info.offset.x / 300));
-          drawerProgress.set(progress);
-        }}
-        onPanEnd={(_, info) => {
-          if (drawerProgress.get() < 0.5 || info.velocity.x < -300) {
-            setIsMenuOpen(true);
-          } else {
-            drawerProgress.set(1);
-          }
-        }}
-      />
-
-      {/* Background Animated Orbs (like AuthLayout) */}
+      {/* Background Animated Orbs */}
       <div className={styles.bgAnimation}>
         <div className={`${styles.orb} ${styles.orb1}`}></div>
         <div className={`${styles.orb} ${styles.orb2}`}></div>
       </div>
 
-      <Header 
-        onMenuToggle={() => setIsMenuOpen(!isMenuOpen)} 
+      <Header
+        onMenuToggle={() => setIsMenuOpen(!isMenuOpen)}
         greeting={`Bon retour, ${username} 👋`}
         subtitle="Prêt pour une nouvelle séance de bien-être ?"
+        scrollProgress={headerScrollProgress}
       />
-      <Sidebar 
+
+      <Sidebar
         onClose={() => setIsMenuOpen(false)}
         progress={drawerProgress}
       />
 
-      {/* Global Edge Trigger for swiping anywhere on the right edge */}
-      <motion.div 
-        className={styles.edgeTrigger}
-        onPan={(_, info) => {
-          const progress = Math.min(1, Math.max(0, 1 + info.offset.x / 300));
-          drawerProgress.set(progress);
-        }}
-        onPanEnd={(_, info) => {
-          if (drawerProgress.get() < 0.5 || info.velocity.x < -300) {
-            setIsMenuOpen(true);
-          } else {
-            drawerProgress.set(1);
-          }
-        }}
-      />
-
-      <main className={styles.cardContent}>
+      <main className={styles.cardContent} ref={containerRef}>
         <div className={styles.widgets}>
           <section className={styles.moodSection}>
             <div className={styles.widgetCard}>
               <h3 className={styles.cardTitle}>Comment vous sentez-vous ?</h3>
               <div className={styles.moodContainer}>
                 {moods.map((mood, index) => (
-                  <motion.div 
+                  <motion.div
                     key={index}
                     whileHover={{ y: -5 }}
                     whileTap={{ scale: 0.95 }}
@@ -144,12 +122,21 @@ const Home: React.FC = () => {
                 </div>
               </div>
             </section>
+            <section className={styles.statsCard}>
+              <div className={styles.widgetCard}>
+                <h3 className={styles.cardTitle}>Statistiques</h3>
+                <div style={{ textAlign: 'center', padding: '1rem' }}>
+                  <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--primary)' }}>12</div>
+                  <p style={{ color: '#64748b', fontSize: '0.875rem' }}>Jours consécutifs</p>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </main>
 
       {/* Unified Interaction Layer: Swipe (everywhere) and Tap (top right) */}
-      <motion.div 
+      <motion.div
         className={styles.edgeTrigger}
         onPan={(_, info) => {
           const progress = Math.min(1, Math.max(0, 1 + info.offset.x / 300));
@@ -163,7 +150,6 @@ const Home: React.FC = () => {
           }
         }}
         onTap={(_, info) => {
-          // If tap is in the header area (top 15% of screen or 100px)
           if (info.point.y < 120) {
             setIsMenuOpen(!isMenuOpen);
           }
