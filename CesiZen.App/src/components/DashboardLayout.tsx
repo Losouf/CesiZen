@@ -3,6 +3,7 @@ import { motion, useScroll, useMotionValue, animate } from 'framer-motion';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import styles from './DashboardLayout.module.css';
+import { authService, type UserInfo } from '../services/authService';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -18,6 +19,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   showGreeting = false 
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<UserInfo | null>(null);
   const drawerProgress = useMotionValue(1); // 1 = closed, 0 = open
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -31,6 +33,15 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     });
   }, [isMenuOpen, drawerProgress]);
 
+  // Fetch real user info
+  useEffect(() => {
+    authService.getCurrentUser()
+      .then(setUser)
+      .catch(() => {
+        // If fetch fails (e.g. invalid token), user stays null or could redirect to login
+      });
+  }, []);
+
   // Track scroll inside the cardContent container
   const { scrollY } = useScroll({
     container: containerRef
@@ -38,11 +49,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   // Calculate header shrinkage progress (0 to 1) over first 100px of scroll
   const headerScrollProgress = useMotionValue(0);
-  scrollY.on('change', (y) => {
-    headerScrollProgress.set(Math.min(1, y / 100));
-  });
+  useEffect(() => {
+    return scrollY.on('change', (y) => {
+      headerScrollProgress.set(Math.min(1, y / 100));
+    });
+  }, [scrollY, headerScrollProgress]);
 
-  const username = "Livio";
+  const username = user?.displayName || user?.username || "...";
   const greetingText = showGreeting ? `Bon retour, ${username} 👋` : (title || "CesiZen");
 
   return (

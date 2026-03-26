@@ -1,6 +1,8 @@
 using CesiZen.Dto;
 using CesiZen.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CesiZen.API.Controllers;
 
@@ -27,7 +29,22 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
     {
         var response = await _authService.RegisterAsync(request);
-        if (response == null) return BadRequest("Email already in use.");
+        if (response == null) return BadRequest("Username or Email already in use.");
         return Ok(response);
+    }
+
+    [Authorize]
+    [HttpGet("me")]
+    public async Task<IActionResult> GetMe()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null) return Unauthorized();
+
+        if (!int.TryParse(userIdClaim.Value, out int userId)) return BadRequest("Invalid user ID in token.");
+
+        var userInfo = await _authService.GetUserInfoAsync(userId);
+        if (userInfo == null) return NotFound("User not found.");
+
+        return Ok(userInfo);
     }
 }

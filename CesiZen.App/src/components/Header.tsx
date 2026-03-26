@@ -1,3 +1,4 @@
+import React from 'react';
 import { motion, MotionValue, useTransform, useMotionValue } from 'framer-motion';
 import styles from './Header.module.css';
 

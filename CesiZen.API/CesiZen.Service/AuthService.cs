@@ -34,8 +34,11 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponseDto?> RegisterAsync(RegisterRequestDto request)
     {
-        var existingUser = await _userRepository.GetByEmailAsync(request.Email);
-        if (existingUser != null) return null;
+        var existingEmail = await _userRepository.GetByEmailAsync(request.Email);
+        if (existingEmail != null) return null;
+
+        var existingUsername = await _userRepository.GetByUsernameAsync(request.Username);
+        if (existingUsername != null) return null;
 
         var user = new User
         {
@@ -50,6 +53,22 @@ public class AuthService : IAuthService
         await _userRepository.SaveChangesAsync();
 
         return GenerateAuthResponse(user);
+    }
+
+    public async Task<UserInfoDto?> GetUserInfoAsync(int userId)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null) return null;
+
+        return new UserInfoDto
+        {
+            Id = user.Id,
+            Username = user.Username,
+            Email = user.Email,
+            DisplayName = user.DisplayName,
+            Role = user.Role?.Label,
+            CreatedAt = user.CreatedAt
+        };
     }
 
     private AuthResponseDto GenerateAuthResponse(User user)

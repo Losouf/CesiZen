@@ -7,6 +7,15 @@ export interface AuthResponse {
   expiresAt: string;
 }
 
+export interface UserInfo {
+  id: number;
+  username: string;
+  email: string;
+  displayName?: string;
+  role?: string;
+  createdAt?: string;
+}
+
 export const authService = {
   async login(email: string, password: string): Promise<AuthResponse> {
     const response = await fetch(`${API_URL}/auth/login`, {
@@ -40,6 +49,26 @@ export const authService = {
     const data = await response.json();
     this.setToken(data.token);
     return data;
+  },
+
+  async getCurrentUser(): Promise<UserInfo> {
+    const token = this.getToken();
+    if (!token) throw new Error('No token found');
+
+    const response = await fetch(`${API_URL}/auth/me`, {
+      method: 'GET',
+      headers: { 
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json' 
+      },
+    });
+
+    if (!response.ok) {
+      this.logout();
+      throw new Error('Session expired');
+    }
+
+    return await response.json();
   },
 
   logout() {
