@@ -53,10 +53,26 @@ builder.Services.AddScoped<IGlobalSettingRepository, GlobalSettingRepository>();
 builder.Services.AddScoped<IGlobalSettingService, GlobalSettingService>();
 builder.Services.AddScoped<IUserPrivacyRepository, UserPrivacyRepository>();
 builder.Services.AddScoped<IUserNotificationRepository, UserNotificationRepository>();
+builder.Services.AddScoped<IUserPreferenceRepository, UserPreferenceRepository>();
 builder.Services.AddScoped<IUserPrivacyService, UserPrivacyService>();
 builder.Services.AddScoped<IUserNotificationService, UserNotificationService>();
+builder.Services.AddScoped<IUserPreferenceService, UserPreferenceService>();
 builder.Services.AddScoped<IInfoArticleRepository, InfoArticleRepository>();
 builder.Services.AddScoped<IInfoArticleService, InfoArticleService>();
+
+// Emotion
+builder.Services.AddScoped<IEmotionRepository, EmotionRepository>();
+builder.Services.AddScoped<IEmotionService, EmotionService>();
+
+// JournalEntry
+builder.Services.AddScoped<IJournalEntryRepository, JournalEntryRepository>();
+builder.Services.AddScoped<IJournalEntryService, JournalEntryService>();
+
+// Roles & Permissions
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+// UserSession
+builder.Services.AddScoped<IUserSessionRepository, UserSessionRepository>();
+builder.Services.AddScoped<IUserSessionService, UserSessionService>();
 
 // JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");

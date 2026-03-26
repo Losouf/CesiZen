@@ -19,3 +19,12 @@ public interface IUserNotificationRepository
     void Delete(UserNotificationSetting setting);
     Task SaveChangesAsync();
 }
+
+public interface IUserPreferenceRepository
+{
+    Task<UserPreference?> GetByUserIdAsync(int userId);
+    Task AddAsync(UserPreference setting);
+    void Update(UserPreference setting);
+    void Delete(UserPreference setting);
+    Task SaveChangesAsync();
+}

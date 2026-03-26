@@ -111,3 +111,68 @@ public class UserNotificationService : IUserNotificationService
         return true;
     }
 }
+
+public class UserPreferenceService : IUserPreferenceService
+{
+    private readonly IUserPreferenceRepository _repository;
+    public UserPreferenceService(IUserPreferenceRepository repository) => _repository = repository;
+
+    public async Task<UserPreferenceDto?> GetByUserIdAsync(int userId)
+    {
+        var s = await _repository.GetByUserIdAsync(userId);
+        if (s == null)
+        {
+            s = new UserPreference
+            {
+                UserId = userId,
+                DarkTheme = false,
+                Language = "FR",
+                EmailNotifications = true,
+                PushNotifications = true,
+                IsProfilePublic = false
+            };
+            await _repository.AddAsync(s);
+            await _repository.SaveChangesAsync();
+        }
+        return new UserPreferenceDto
+        {
+            DarkTheme = s.DarkTheme,
+            Language = s.Language
+        };
+    }
+
+    public async Task<bool> UpdateAsync(int userId, UserPreferenceDto dto)
+    {
+        var s = await _repository.GetByUserIdAsync(userId);
+        if (s == null)
+        {
+            s = new UserPreference
+            {
+                UserId = userId,
+                DarkTheme = dto.DarkTheme,
+                Language = dto.Language,
+                EmailNotifications = true,
+                PushNotifications = true,
+                IsProfilePublic = false
+            };
+            await _repository.AddAsync(s);
+        }
+        else
+        {
+            s.DarkTheme = dto.DarkTheme;
+            s.Language = dto.Language;
+            _repository.Update(s);
+        }
+        await _repository.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(int userId)
+    {
+        var s = await _repository.GetByUserIdAsync(userId);
+        if (s == null) return false;
+        _repository.Delete(s);
+        await _repository.SaveChangesAsync();
+        return true;
+    }
+}

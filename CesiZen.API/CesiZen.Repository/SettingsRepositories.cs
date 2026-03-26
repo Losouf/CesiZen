@@ -31,3 +31,17 @@ public class UserNotificationRepository : IUserNotificationRepository
     public void Delete(UserNotificationSetting setting) => _context.UserNotificationSettings.Remove(setting);
     public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 }
+
+public class UserPreferenceRepository : IUserPreferenceRepository
+{
+    private readonly CesiZenContext _context;
+    public UserPreferenceRepository(CesiZenContext context) => _context = context;
+
+    public async Task<UserPreference?> GetByUserIdAsync(int userId)
+        => await _context.UserPreferences.FirstOrDefaultAsync(s => s.UserId == userId);
+
+    public async Task AddAsync(UserPreference setting) => await _context.UserPreferences.AddAsync(setting);
+    public void Update(UserPreference setting) => _context.UserPreferences.Update(setting);
+    public void Delete(UserPreference setting) => _context.UserPreferences.Remove(setting);
+    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+}
