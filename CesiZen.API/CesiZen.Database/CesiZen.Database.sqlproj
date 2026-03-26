@@ -60,6 +60,8 @@
     <Folder Include="dbo\Tables\" />
   </ItemGroup>
   <ItemGroup>
+    <Build Include="dbo\Tables\UserPrivacySetting.sql" />
+    <Build Include="dbo\Tables\UserNotificationSetting.sql" />
     <Build Include="dbo\Tables\UserPreference.sql" />
     <Build Include="dbo\Tables\GlobalSetting.sql" />
     <Build Include="dbo\Tables\UserSession.sql" />

@@ -15,4 +15,6 @@ public class UserInfoDto
     public string? Role { get; set; }
     public DateTime? CreatedAt { get; set; }
     public UserPreferenceDto? Preferences { get; set; }
+    public UserPrivacyDto? Privacy { get; set; }
+    public UserNotificationDto? Notifications { get; set; }
 }

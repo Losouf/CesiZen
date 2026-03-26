@@ -32,6 +32,8 @@ public class UserRepository : IUserRepository
         return await _context.Users
             .Include(u => u.Role)
             .Include(u => u.UserPreferences)
+            .Include(u => u.UserPrivacySettings)
+            .Include(u => u.UserNotificationSettings)
             .FirstOrDefaultAsync(u => u.Id == id);
     }
 

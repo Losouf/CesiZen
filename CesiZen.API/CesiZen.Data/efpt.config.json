@@ -55,7 +55,15 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[UserNotificationSetting]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[UserPreference]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UserPrivacySetting]",
          "ObjectType": 0
       },
       {

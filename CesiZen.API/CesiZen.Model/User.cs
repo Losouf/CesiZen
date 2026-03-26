@@ -67,7 +67,13 @@ public partial class User
     public virtual Role Role { get; set; }
 
     [InverseProperty("User")]
+    public virtual ICollection<UserNotificationSetting> UserNotificationSettings { get; set; } = new List<UserNotificationSetting>();
+
+    [InverseProperty("User")]
     public virtual ICollection<UserPreference> UserPreferences { get; set; } = new List<UserPreference>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<UserPrivacySetting> UserPrivacySettings { get; set; } = new List<UserPrivacySetting>();
 
     [InverseProperty("User")]
     public virtual ICollection<UserSession> UserSessions { get; set; } = new List<UserSession>();

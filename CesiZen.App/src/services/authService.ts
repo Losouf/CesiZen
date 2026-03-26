@@ -8,11 +8,19 @@ export interface AuthResponse {
 }
 
 export interface UserPreference {
-  emailNotifications: boolean;
-  pushNotifications: boolean;
   darkTheme: boolean;
-  isProfilePublic: boolean;
   language: string;
+}
+
+export interface UserPrivacy {
+  isProfilePublic: boolean;
+  dataSharingConsent: boolean;
+}
+
+export interface UserNotification {
+  emailEnabled: boolean;
+  pushEnabled: boolean;
+  weeklySummary: boolean;
 }
 
 export interface UserInfo {
@@ -27,6 +35,8 @@ export interface UserInfo {
   role?: string;
   createdAt?: string;
   preferences?: UserPreference;
+  privacy?: UserPrivacy;
+  notifications?: UserNotification;
 }
 
 export const authService = {
@@ -134,7 +144,69 @@ export const authService = {
     }
   },
 
+  async getPrivacy(): Promise<UserPrivacy> {
+    const token = this.getToken();
+    if (!token) throw new Error('No token found');
+
+    const response = await fetch(`${API_URL}/UserPrivacy/me`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch privacy settings');
+    return response.json();
+  },
+
+  async updatePrivacy(data: UserPrivacy): Promise<void> {
+    const token = this.getToken();
+    if (!token) throw new Error('No token found');
+
+    const response = await fetch(`${API_URL}/UserPrivacy/me`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(error || 'Failed to update privacy settings');
+    }
+  },
+
+  async getNotifications(): Promise<UserNotification> {
+    const token = this.getToken();
+    if (!token) throw new Error('No token found');
+
+    const response = await fetch(`${API_URL}/UserNotification/me`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch notification settings');
+    return response.json();
+  },
+
+  async updateNotifications(data: UserNotification): Promise<void> {
+    const token = this.getToken();
+    if (!token) throw new Error('No token found');
+
+    const response = await fetch(`${API_URL}/UserNotification/me`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(error || 'Failed to update notification settings');
+    }
+  },
+
   isAuthenticated() {
     return !!this.getToken();
   }
-}
+};

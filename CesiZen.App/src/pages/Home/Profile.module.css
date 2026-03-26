@@ -186,27 +186,35 @@
 
 .textIcon {
   position: absolute;
-  left: 1rem;
-  top: 1rem;
-  color: #94a3b8;
+  left: 1.25rem;
+  top: 1.1rem;
+  color: var(--text-muted);
+  z-index: 10;
 }
 
 .textarea {
   width: 100%;
-  padding: 1rem 1rem 1rem 3rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  padding: 1rem 1.25rem 1rem 3.25rem;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-input);
+  color: var(--text-main);
   min-height: 120px;
   font-family: inherit;
   font-size: 1rem;
   resize: vertical;
-  transition: all 0.2s;
+  transition: var(--transition);
+  outline: none;
 }
 
 .textarea:focus {
-  outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.textarea::placeholder {
+  color: #94a3b8;
 }
 
 /* Switch & Setting cards */

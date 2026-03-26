@@ -32,7 +32,11 @@ public partial class CesiZenContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<UserNotificationSetting> UserNotificationSettings { get; set; }
+
     public virtual DbSet<UserPreference> UserPreferences { get; set; }
+
+    public virtual DbSet<UserPrivacySetting> UserPrivacySettings { get; set; }
 
     public virtual DbSet<UserSession> UserSessions { get; set; }
 
@@ -95,6 +99,18 @@ public partial class CesiZenContext : DbContext
             entity.HasOne(d => d.Role).WithMany(p => p.Users).HasConstraintName("FK_User_Role");
         });
 
+        modelBuilder.Entity<UserNotificationSetting>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__UserNoti__3214EC0735681ED3");
+
+            entity.Property(e => e.EmailEnabled).HasDefaultValue(true);
+            entity.Property(e => e.LastUpdated).HasDefaultValueSql("(getutcdate())");
+            entity.Property(e => e.PushEnabled).HasDefaultValue(true);
+            entity.Property(e => e.WeeklySummary).HasDefaultValue(true);
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserNotificationSettings).HasConstraintName("FK_UserNotificationSetting_User");
+        });
+
         modelBuilder.Entity<UserPreference>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__UserPref__3214EC0799CD4D38");
@@ -104,6 +120,16 @@ public partial class CesiZenContext : DbContext
             entity.Property(e => e.PushNotifications).HasDefaultValue(true);
 
             entity.HasOne(d => d.User).WithMany(p => p.UserPreferences).HasConstraintName("FK_UserPreference_User");
+        });
+
+        modelBuilder.Entity<UserPrivacySetting>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__UserPriv__3214EC07A5727B25");
+
+            entity.Property(e => e.DataSharingConsent).HasDefaultValue(true);
+            entity.Property(e => e.LastUpdated).HasDefaultValueSql("(getutcdate())");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserPrivacySettings).HasConstraintName("FK_UserPrivacySetting_User");
         });
 
         modelBuilder.Entity<UserSession>(entity =>

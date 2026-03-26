@@ -13,11 +13,21 @@ public class UpdateProfileDto
 
 public class UserPreferenceDto
 {
-    public bool EmailNotifications { get; set; }
-    public bool PushNotifications { get; set; }
     public bool DarkTheme { get; set; }
-    public bool IsProfilePublic { get; set; }
     public string Language { get; set; } = "FR";
+}
+
+public class UserPrivacyDto
+{
+    public bool IsProfilePublic { get; set; }
+    public bool DataSharingConsent { get; set; }
+}
+
+public class UserNotificationDto
+{
+    public bool EmailEnabled { get; set; }
+    public bool PushEnabled { get; set; }
+    public bool WeeklySummary { get; set; }
 }
 
 public class GlobalSettingDto

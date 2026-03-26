@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Eye, Lock } from 'lucide-react';
 import DashboardLayout from '../../components/DashboardLayout';
-import { authService, type UserInfo } from '../../services/authService';
+import { authService, type UserInfo, type UserPrivacy } from '../../services/authService';
 import { useToast } from '../../context/ToastContext';
 import styles from './Profile.module.css';
 
@@ -13,21 +13,26 @@ const ProfilePrivacy: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   useEffect(() => {
-    authService.getCurrentUser().then(setUserInfo);
+    authService.getCurrentUser().then(u => {
+      if (u && !u.privacy) {
+        u.privacy = { isProfilePublic: false, dataSharingConsent: true };
+      }
+      setUserInfo(u);
+    });
   }, []);
 
-  const handleToggle = async (key: 'isProfilePublic' | 'darkTheme' | 'emailNotifications' | 'pushNotifications') => {
-    if (!userInfo?.preferences) return;
+  const handleToggle = async (key: keyof UserPrivacy) => {
+    if (!userInfo?.privacy) return;
 
     setLoading(true);
     try {
-      const newPrefs = {
-        ...userInfo.preferences,
-        [key]: !userInfo.preferences[key as keyof typeof userInfo.preferences]
+      const newPrivacy = {
+        ...userInfo.privacy,
+        [key]: !userInfo.privacy[key]
       };
       
-      await authService.updatePreferences(newPrefs);
-      setUserInfo({ ...userInfo, preferences: newPrefs });
+      await authService.updatePrivacy(newPrivacy);
+      setUserInfo({ ...userInfo, privacy: newPrivacy });
       showToast('Paramètre mis à jour', 'success');
     } catch (err: any) {
       showToast(err.message || 'Erreur lors de la mise à jour', 'error');
@@ -60,7 +65,7 @@ const ProfilePrivacy: React.FC = () => {
             <label className={styles.switch}>
               <input 
                 type="checkbox" 
-                checked={userInfo.preferences?.isProfilePublic || false}
+                checked={userInfo.privacy?.isProfilePublic || false}
                 onChange={() => handleToggle('isProfilePublic')}
                 disabled={loading}
               />
@@ -79,8 +84,9 @@ const ProfilePrivacy: React.FC = () => {
             <label className={styles.switch}>
               <input 
                 type="checkbox" 
-                checked={true} // For demo, let's say this is static or another pref
-                disabled={true}
+                checked={userInfo.privacy?.dataSharingConsent || false}
+                onChange={() => handleToggle('dataSharingConsent')}
+                disabled={loading}
               />
               <span className={styles.slider}></span>
             </label>

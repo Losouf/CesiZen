@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 
 // Database
@@ -19,6 +21,12 @@ builder.Services.AddDbContext<CesiZenContext>(options =>
 // Dependency Injection
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IGlobalSettingRepository, GlobalSettingRepository>();
+builder.Services.AddScoped<IGlobalSettingService, GlobalSettingService>();
+builder.Services.AddScoped<IUserPrivacyRepository, UserPrivacyRepository>();
+builder.Services.AddScoped<IUserNotificationRepository, UserNotificationRepository>();
+builder.Services.AddScoped<IUserPrivacyService, UserPrivacyService>();
+builder.Services.AddScoped<IUserNotificationService, UserNotificationService>();
 
 // JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
@@ -63,6 +71,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseCors("AllowFrontend");

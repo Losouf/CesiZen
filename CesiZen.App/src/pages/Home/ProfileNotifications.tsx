@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Mail, Smartphone } from 'lucide-react';
 import DashboardLayout from '../../components/DashboardLayout';
-import { authService, type UserInfo } from '../../services/authService';
+import { authService, type UserInfo, type UserNotification } from '../../services/authService';
 import { useToast } from '../../context/ToastContext';
 import styles from './Profile.module.css';
 
@@ -13,21 +13,26 @@ const ProfileNotifications: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
   useEffect(() => {
-    authService.getCurrentUser().then(setUserInfo);
+    authService.getCurrentUser().then(u => {
+      if (u && !u.notifications) {
+        u.notifications = { emailEnabled: true, pushEnabled: true, weeklySummary: true };
+      }
+      setUserInfo(u);
+    });
   }, []);
 
-  const handleToggle = async (key: 'emailNotifications' | 'pushNotifications') => {
-    if (!userInfo?.preferences) return;
+  const handleToggle = async (key: keyof UserNotification) => {
+    if (!userInfo?.notifications) return;
 
     setLoading(true);
     try {
-      const newPrefs = {
-        ...userInfo.preferences,
-        [key]: !userInfo.preferences[key]
+      const newNotifications = {
+        ...userInfo.notifications,
+        [key]: !userInfo.notifications[key]
       };
       
-      await authService.updatePreferences(newPrefs);
-      setUserInfo({ ...userInfo, preferences: newPrefs });
+      await authService.updateNotifications(newNotifications);
+      setUserInfo({ ...userInfo, notifications: newNotifications });
       showToast('Préférence mise à jour', 'success');
     } catch (err: any) {
       showToast(err.message || 'Erreur lors de la mise à jour', 'error');
@@ -55,13 +60,13 @@ const ProfileNotifications: React.FC = () => {
                 <Mail size={20} className={styles.settingIcon} />
                 <h4>Alertes par Email</h4>
               </div>
-              <p>Recevoir un récapitulatif hebdomadaire de votre bien-être.</p>
+              <p>Recevoir les notifications importantes par courriel.</p>
             </div>
             <label className={styles.switch}>
               <input 
                 type="checkbox" 
-                checked={userInfo.preferences?.emailNotifications || false} 
-                onChange={() => handleToggle('emailNotifications')}
+                checked={userInfo.notifications?.emailEnabled || false} 
+                onChange={() => handleToggle('emailEnabled')}
                 disabled={loading}
               />
               <span className={styles.slider}></span>
@@ -74,13 +79,32 @@ const ProfileNotifications: React.FC = () => {
                 <Smartphone size={20} className={styles.settingIcon} />
                 <h4>Notifications Push</h4>
               </div>
-              <p>Rappels quotidiens pour vos séances de méditation.</p>
+              <p>Rappels quotidiens sur votre mobile.</p>
             </div>
             <label className={styles.switch}>
               <input 
                 type="checkbox" 
-                checked={userInfo.preferences?.pushNotifications || false}
-                onChange={() => handleToggle('pushNotifications')}
+                checked={userInfo.notifications?.pushEnabled || false}
+                onChange={() => handleToggle('pushEnabled')}
+                disabled={loading}
+              />
+              <span className={styles.slider}></span>
+            </label>
+          </div>
+
+          <div className={styles.settingCard}>
+            <div className={styles.settingInfo}>
+              <div className={styles.settingHeader}>
+                <Mail size={20} className={styles.settingIcon} />
+                <h4>Récapitulatif Hebdomadaire</h4>
+              </div>
+              <p>Un bilan de votre bien-être chaque lundi matin.</p>
+            </div>
+            <label className={styles.switch}>
+              <input 
+                type="checkbox" 
+                checked={userInfo.notifications?.weeklySummary || false}
+                onChange={() => handleToggle('weeklySummary')}
                 disabled={loading}
               />
               <span className={styles.slider}></span>
