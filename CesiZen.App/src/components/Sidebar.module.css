@@ -6,8 +6,9 @@
   height: 100vh;
   background: rgba(15, 23, 42, 0.4);
   backdrop-filter: blur(4px);
-  z-index: 1000;
-  pointer-events: none; /* Controlled via style prop */
+  z-index: 9999;
+  pointer-events: none;
+  /* Controlled via style prop */
 }
 
 .drawer {
@@ -21,7 +22,7 @@
   display: flex;
   flex-direction: column;
   padding: 2rem 1.5rem;
-  z-index: 1001;
+  z-index: 9999;
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
   touch-action: none;
 }
