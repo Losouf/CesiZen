@@ -110,14 +110,245 @@
   color: #94a3b8;
 }
 
-@media (max-width: 1024px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
+.flexHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
 }
 
-@media (max-width: 640px) {
-  .moodContainer {
-    justify-content: flex-start;
+.badge {
+  background: #eff6ff;
+  color: var(--primary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.articlesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.articleItem {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #f1f5f9;
+  position: relative;
+  height: 100%;
+}
+
+.articleItem:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-color: #e2e8f0;
+}
+
+.articleImagePlaceholder {
+  height: 160px;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  position: relative;
+}
+
+.articleImagePlaceholder svg {
+  opacity: 0.5;
+  transition: transform 0.3s ease;
+}
+
+.articleItem:hover .articleImagePlaceholder svg {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+
+.articleCardContent {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.articleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.articleHeader h4 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.publishDate {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  white-space: nowrap;
+  margin-left: 1rem;
+}
+
+.articleExcerpt {
+  font-size: 0.875rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.articleFooter {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.articleMeta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.readMoreBtn {
+  background: var(--primary);
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+}
+
+.readMoreBtn:hover {
+  transform: scale(1.1);
+  background: #2563eb;
+  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+}
+
+/* Did You Know Banner */
+.didYouKnow {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  border: 1px solid #f1f5f9;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.didYouKnow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: var(--primary);
+}
+
+.dykIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: 1.25rem;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  flex-shrink: 0;
+}
+
+.dykContent h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.dykContent p {
+  font-size: 1rem;
+  color: #64748b;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.loadingContainer, .emptyState, .errorCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  gap: 1.25rem;
+  background: white;
+  border-radius: 1.5rem;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #f1f5f9;
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .articlesGrid {
+    grid-template-columns: 1fr;
+  }
+  .didYouKnow {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  .didYouKnow::before {
+    width: 100%;
+    height: 4px;
+    top: 0;
   }
 }
