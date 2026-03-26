@@ -19,13 +19,25 @@ public class InfoArticlesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<InfoArticleDto>>> GetAll()
     {
-        return Ok(await _service.GetAllAsync());
+        int? userId = null;
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            var userIdStr = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdStr, out int id)) userId = id;
+        }
+        return Ok(await _service.GetAllAsync(userId));
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<InfoArticleDto>> GetById(int id)
     {
-        var article = await _service.GetByIdAsync(id);
+        int? userId = null;
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            var userIdStr = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (int.TryParse(userIdStr, out int uid)) userId = uid;
+        }
+        var article = await _service.GetByIdAsync(id, userId);
         if (article == null) return NotFound();
         return Ok(article);
     }

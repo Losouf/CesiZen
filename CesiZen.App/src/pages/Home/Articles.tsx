@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { BookOpen, Clock, User, ChevronRight, AlertCircle } from 'lucide-react';
 import DashboardLayout from '../../components/DashboardLayout';
 import { articleService, type InfoArticle } from '../../services/articleService';
 import styles from './Home.module.css';
 
 const Articles: React.FC = () => {
+  const navigate = useNavigate();
   const [articles, setArticles] = useState<InfoArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
+
+  const handleImageError = (id: number) => {
+    setImageErrors(prev => new Set(prev).add(id));
+  };
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -60,9 +67,27 @@ const Articles: React.FC = () => {
           ) : (
             <div className={styles.articlesGrid}>
               {articles.map((article) => (
-                <div key={article.id} className={styles.articleItem}>
-                  <div className={styles.articleImagePlaceholder}>
-                    <BookOpen size={48} />
+                <div 
+                  key={article.id} 
+                  className={styles.articleItem}
+                  onClick={() => navigate(`/articles/${article.id}`)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div 
+                    className={styles.articleImagePlaceholder}
+                    style={article.imageUrl && article.imageUrl.trim() !== '' && !imageErrors.has(article.id) 
+                      ? { backgroundImage: `url(${article.imageUrl})` } 
+                      : {}}
+                  >
+                    {( !article.imageUrl || article.imageUrl.trim() === '' || imageErrors.has(article.id) ) && <BookOpen size={40} />}
+                    {article.imageUrl && article.imageUrl.trim() !== '' && (
+                      <img 
+                        src={article.imageUrl} 
+                        alt="" 
+                        style={{ display: 'none' }} 
+                        onError={() => handleImageError(article.id)} 
+                      />
+                    )}
                   </div>
                   <div className={styles.articleCardContent}>
                     <div className={styles.articleHeader}>
@@ -82,7 +107,7 @@ const Articles: React.FC = () => {
                         </div>
                         <div className={styles.metaItem}>
                           <Clock size={14} />
-                          <span>{calculateReadTime(article.body)}</span>
+                          <span>{article.readTime ? `${article.readTime} min` : calculateReadTime(article.body)}</span>
                         </div>
                       </div>
                       <button className={styles.readMoreBtn} title="Lire l'article">

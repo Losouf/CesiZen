@@ -17,6 +17,7 @@ public class InfoArticleRepository : IInfoArticleRepository
     {
         return await _context.InfoArticles
             .Include(a => a.Author)
+            .Include(a => a.FavoriteArticles)
             .OrderByDescending(a => a.PublishedAt)
             .ToListAsync();
     }
@@ -25,6 +26,7 @@ public class InfoArticleRepository : IInfoArticleRepository
     {
         return await _context.InfoArticles
             .Include(a => a.Author)
+            .Include(a => a.FavoriteArticles)
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 

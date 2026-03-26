@@ -27,6 +27,12 @@ public partial class InfoArticle
 
     public int AuthorId { get; set; }
 
+    public int? ReadTime { get; set; }
+
+    [StringLength(500)]
+    [Unicode(false)]
+    public string ImageUrl { get; set; }
+
     [ForeignKey("AuthorId")]
     [InverseProperty("InfoArticles")]
     public virtual User Author { get; set; }

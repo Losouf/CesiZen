@@ -9,6 +9,7 @@ import ProfileInfo from './pages/Home/ProfileInfo';
 import ProfilePrivacy from './pages/Home/ProfilePrivacy';
 import ProfileNotifications from './pages/Home/ProfileNotifications';
 import ProfileHelp from './pages/Home/ProfileHelp';
+import ArticleDetail from './pages/Home/ArticleDetail';
 import NotFound from './pages/NotFound/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
@@ -57,6 +58,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Articles />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/articles/:id" 
+            element={
+              <ProtectedRoute>
+                <ArticleDetail />
               </ProtectedRoute>
             } 
           />

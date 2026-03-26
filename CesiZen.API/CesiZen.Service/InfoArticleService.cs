@@ -13,17 +13,17 @@ public class InfoArticleService : IInfoArticleService
         _repository = repository;
     }
 
-    public async Task<IEnumerable<InfoArticleDto>> GetAllAsync()
+    public async Task<IEnumerable<InfoArticleDto>> GetAllAsync(int? userId = null)
     {
         var articles = await _repository.GetAllAsync();
-        return articles.Select(a => MapToDto(a));
+        return articles.Select(a => MapToDto(a, userId));
     }
 
-    public async Task<InfoArticleDto?> GetByIdAsync(int id)
+    public async Task<InfoArticleDto?> GetByIdAsync(int id, int? userId = null)
     {
         var article = await _repository.GetByIdAsync(id);
         if (article == null) return null;
-        return MapToDto(article);
+        return MapToDto(article, userId);
     }
 
     public async Task<InfoArticleDto> CreateAsync(CreateInfoArticleDto dto)
@@ -33,6 +33,8 @@ public class InfoArticleService : IInfoArticleService
             Title = dto.Title,
             Body = dto.Body,
             AuthorId = dto.AuthorId,
+            ReadTime = dto.ReadTime,
+            ImageUrl = dto.ImageUrl,
             PublishedAt = DateTime.UtcNow
         };
 
@@ -51,6 +53,8 @@ public class InfoArticleService : IInfoArticleService
 
         article.Title = dto.Title;
         article.Body = dto.Body;
+        article.ReadTime = dto.ReadTime;
+        article.ImageUrl = dto.ImageUrl;
 
         _repository.Update(article);
         await _repository.SaveChangesAsync();
@@ -67,7 +71,26 @@ public class InfoArticleService : IInfoArticleService
         return true;
     }
 
-    private static InfoArticleDto MapToDto(InfoArticle a)
+    public async Task<bool> ToggleFavoriteAsync(int userId, int articleId)
+    {
+        var article = await _repository.GetByIdAsync(articleId);
+        if (article == null) return false;
+
+        var favorite = article.FavoriteArticles.FirstOrDefault(f => f.UserId == userId);
+        if (favorite != null)
+        {
+            article.FavoriteArticles.Remove(favorite);
+        }
+        else
+        {
+            article.FavoriteArticles.Add(new FavoriteArticle { UserId = userId, ArticleId = articleId });
+        }
+
+        await _repository.SaveChangesAsync();
+        return true;
+    }
+
+    private static InfoArticleDto MapToDto(InfoArticle a, int? userId = null)
     {
         return new InfoArticleDto
         {
@@ -76,7 +99,10 @@ public class InfoArticleService : IInfoArticleService
             Body = a.Body,
             PublishedAt = a.PublishedAt,
             AuthorId = a.AuthorId,
-            AuthorName = a.Author?.DisplayName ?? a.Author?.Username
+            AuthorName = a.Author?.DisplayName ?? a.Author?.Username,
+            ReadTime = a.ReadTime,
+            ImageUrl = a.ImageUrl,
+            IsFavorite = userId.HasValue && a.FavoriteArticles.Any(f => f.UserId == userId.Value)
         };
     }
 }

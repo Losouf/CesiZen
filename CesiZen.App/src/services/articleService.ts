@@ -7,17 +7,24 @@ export interface InfoArticle {
   publishedAt: string;
   authorId: number;
   authorName?: string;
+  readTime?: number;
+  imageUrl?: string;
+  isFavorite: boolean;
 }
 
 export interface CreateInfoArticle {
   title: string;
   body: string;
   authorId: number;
+  readTime?: number;
+  imageUrl?: string;
 }
 
 export interface UpdateInfoArticle {
   title: string;
   body: string;
+  readTime?: number;
+  imageUrl?: string;
 }
 
 export const articleService = {
@@ -76,5 +83,18 @@ export const articleService = {
     });
 
     if (!response.ok) throw new Error('Failed to delete article');
+  },
+
+  async toggleFavorite(id: number): Promise<void> {
+    const response = await fetch(`${API_URL}/FavoriteArticles/toggle/${id}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Erreur lors du changement de favori");
+    }
   }
 };
