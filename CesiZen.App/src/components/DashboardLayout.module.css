@@ -20,25 +20,25 @@
 .orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0.3;
+  filter: blur(80px); /* Increased blur for better blending */
+  opacity: 0.15; /* Lowered opacity for more subtle effect */
   animation: drift 15s infinite alternate ease-in-out;
 }
 
 .orb1 {
-  width: 200px;
-  height: 200px;
+  width: 300px; /* Larger to spread color more evenly */
+  height: 300px;
   background: #3b82f6;
-  top: -20px;
+  top: -50px;
   right: -50px;
 }
 
 .orb2 {
-  width: 250px;
-  height: 250px;
+  width: 350px;
+  height: 350px;
   background: #818cf8;
-  top: 60px;
-  left: -80px;
+  top: 100px;
+  left: -100px;
   animation-delay: -5s;
 }
 

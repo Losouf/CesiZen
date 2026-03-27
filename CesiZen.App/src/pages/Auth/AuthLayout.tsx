@@ -22,28 +22,30 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) =>
         <div className={`${styles.orb} ${styles.orb2}`}></div>
       </div>
 
-      <div className={styles.header}>
-        <h1 className={authStyles.title}>{title}</h1>
-        <p className={authStyles.subtitle}>{subtitle}</p>
-      </div>
-
-      <div className={styles.card}>
-        <div className={`${styles.toggleWrapper} ${authStyles.animateIn}`} style={{ animationDelay: '0.05s' }}>
-          <button 
-            className={`${styles.toggleButton} ${isLogin ? styles.activeToggle : ''}`}
-            onClick={() => navigate('/login')}
-          >
-            Login
-          </button>
-          <button 
-            className={`${styles.toggleButton} ${!isLogin ? styles.activeToggle : ''}`}
-            onClick={() => navigate('/register')}
-          >
-            Register
-          </button>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h1 className={authStyles.title}>{title}</h1>
+          <p className={authStyles.subtitle}>{subtitle}</p>
         </div>
-        
-        {children}
+
+        <div className={styles.card}>
+          <div className={`${styles.toggleWrapper} ${authStyles.animateIn}`} style={{ animationDelay: '0.05s' }}>
+            <button 
+              className={`${styles.toggleButton} ${isLogin ? styles.activeToggle : ''}`}
+              onClick={() => navigate('/login')}
+            >
+              Login
+            </button>
+            <button 
+              className={`${styles.toggleButton} ${!isLogin ? styles.activeToggle : ''}`}
+              onClick={() => navigate('/register')}
+            >
+              Register
+            </button>
+          </div>
+          
+          {children}
+        </div>
       </div>
     </div>
   );

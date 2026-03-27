@@ -32,6 +32,12 @@
   animation: revealSubtitle 1s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
 }
 
+@media (min-width: 768px) {
+  .title, .subtitle {
+    text-align: center;
+  }
+}
+
 /* Staggered CSS Animation: Reveal + Blur + Scale */
 .animateIn {
   opacity: 0;
