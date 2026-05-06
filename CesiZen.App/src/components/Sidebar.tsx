@@ -7,7 +7,13 @@ import {
   BookOpen,
   User,
   LogOut,
-  X
+  X,
+  LayoutDashboard,
+  Users as UsersIcon,
+  Heart,
+  FileText,
+  Shield,
+  Key
 } from 'lucide-react';
 import { authService } from '../services/authService';
 import styles from './Sidebar.module.css';
@@ -37,6 +43,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, progress }) => {
     { to: '/stats', icon: BarChart2, label: 'Suivi' },
     { to: '/articles', icon: BookOpen, label: 'Prévention' },
     { to: '/profile', icon: User, label: 'Profil' },
+  ];
+
+  const adminItems = [
+    { to: '/admin', icon: LayoutDashboard, label: 'Tableau de bord', end: true },
+    { to: '/admin/users', icon: UsersIcon, label: 'Utilisateurs' },
+    { to: '/admin/roles', icon: Shield, label: 'Rôles' },
+    { to: '/admin/permissions', icon: Key, label: 'Permissions' },
+    { to: '/admin/emotions', icon: Heart, label: 'Émotions' },
+    { to: '/admin/articles', icon: FileText, label: 'Articles' },
   ];
 
   return (
@@ -76,6 +91,20 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, progress }) => {
             <NavLink
               key={item.to}
               to={item.to}
+              onClick={onClose}
+              className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ''}`}
+            >
+              <item.icon size={22} />
+              <span>{item.label}</span>
+            </NavLink>
+          ))}
+
+          <div className={styles.sectionLabel}>Administration</div>
+          {adminItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
               onClick={onClose}
               className={({ isActive }) => `${styles.navLink} ${isActive ? styles.active : ''}`}
             >

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  User, 
-  Bell, 
-  LifeBuoy, 
-  LogOut, 
+import {
+  User,
+  Bell,
+  LifeBuoy,
+  LogOut,
   ChevronRight,
   ShieldCheck,
-  Clock
+  Clock,
+  ShieldAlert
 } from 'lucide-react';
 import DashboardLayout from '../../components/DashboardLayout';
 import { authService, type UserInfo } from '../../services/authService';
@@ -62,8 +63,8 @@ const Profile: React.FC = () => {
 
         <div className={styles.sectionList}>
           {sections.map((section, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className={styles.sectionItem}
               onClick={() => navigate(section.path)}
             >
@@ -76,6 +77,19 @@ const Profile: React.FC = () => {
               <ChevronRight className={styles.chevron} size={20} />
             </div>
           ))}
+
+          <div
+            className={styles.sectionItem}
+            onClick={() => navigate('/admin')}
+          >
+            <div className={styles.iconWrapper} style={{ backgroundColor: '#e6394615', color: '#e63946' }}>
+              <ShieldAlert size={22} strokeWidth={2.5} />
+            </div>
+            <div className={styles.sectionInfo}>
+              <h4>Espace administrateur</h4>
+            </div>
+            <ChevronRight className={styles.chevron} size={20} />
+          </div>
         </div>
 
         <button 

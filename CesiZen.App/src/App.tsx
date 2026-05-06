@@ -10,9 +10,16 @@ import ProfilePrivacy from './pages/Home/ProfilePrivacy';
 import ProfileNotifications from './pages/Home/ProfileNotifications';
 import ProfileHelp from './pages/Home/ProfileHelp';
 import ArticleDetail from './pages/Home/ArticleDetail';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import AdminUsers from './pages/Admin/AdminUsers';
+import AdminEmotions from './pages/Admin/AdminEmotions';
+import AdminArticles from './pages/Admin/AdminArticles';
+import AdminRoles from './pages/Admin/AdminRoles';
+import AdminPermissions from './pages/Admin/AdminPermissions';
 import NotFound from './pages/NotFound/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
+import AdminRoute from './components/AdminRoute';
 import { ToastProvider } from './context/ToastContext';
 import './App.css';
 
@@ -109,6 +116,12 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
+          <Route path="/admin/roles" element={<AdminRoute><AdminRoles /></AdminRoute>} />
+          <Route path="/admin/permissions" element={<AdminRoute><AdminPermissions /></AdminRoute>} />
+          <Route path="/admin/emotions" element={<AdminRoute><AdminEmotions /></AdminRoute>} />
+          <Route path="/admin/articles" element={<AdminRoute><AdminArticles /></AdminRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
