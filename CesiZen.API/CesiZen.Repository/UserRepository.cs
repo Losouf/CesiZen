@@ -13,6 +13,14 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
+    public async Task<IEnumerable<User>> GetAllAsync()
+    {
+        return await _context.Users
+            .Include(u => u.Role)
+            .OrderByDescending(u => u.CreatedAt)
+            .ToListAsync();
+    }
+
     public async Task<User?> GetByEmailAsync(string email)
     {
         return await _context.Users
@@ -37,6 +45,16 @@ public class UserRepository : IUserRepository
             .FirstOrDefaultAsync(u => u.Id == id);
     }
 
+    public async Task<bool> EmailExistsAsync(string email)
+    {
+        return await _context.Users.AnyAsync(u => u.Email == email);
+    }
+
+    public async Task<bool> UsernameExistsAsync(string username)
+    {
+        return await _context.Users.AnyAsync(u => u.Username == username);
+    }
+
     public async Task AddAsync(User user)
     {
         await _context.Users.AddAsync(user);
@@ -45,6 +63,11 @@ public class UserRepository : IUserRepository
     public void Update(User user)
     {
         _context.Users.Update(user);
+    }
+
+    public void Delete(User user)
+    {
+        _context.Users.Remove(user);
     }
 
     public async Task SaveChangesAsync()

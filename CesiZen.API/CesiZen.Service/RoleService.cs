@@ -12,6 +12,9 @@ public interface IRoleService
     Task<bool> UpdateAsync(int id, UpdateRoleDto dto);
     Task<bool> DeleteAsync(int id);
     Task<IEnumerable<PermissionDto>> GetAllPermissionsAsync();
+    Task<RoleWithPermissionsDto?> GetWithPermissionsAsync(int roleId);
+    Task<bool> AddPermissionAsync(int roleId, int permissionId);
+    Task<bool> RemovePermissionAsync(int roleId, int permissionId);
 }
 
 public class RoleService : IRoleService
@@ -66,5 +69,38 @@ public class RoleService : IRoleService
     {
         var permissions = await _repository.GetAllPermissionsAsync();
         return permissions.Select(p => new PermissionDto { Id = p.Id, Label = p.Label, Code = p.Code });
+    }
+
+    public async Task<RoleWithPermissionsDto?> GetWithPermissionsAsync(int roleId)
+    {
+        var role = await _repository.GetByIdAsync(roleId);
+        if (role == null) return null;
+
+        var perms = await _repository.GetPermissionsForRoleAsync(roleId);
+        return new RoleWithPermissionsDto
+        {
+            Id = role.Id,
+            Label = role.Label,
+            Permissions = perms.Select(p => new PermissionDto
+            {
+                Id = p.Id,
+                Label = p.Label,
+                Code = p.Code
+            }).ToList()
+        };
+    }
+
+    public async Task<bool> AddPermissionAsync(int roleId, int permissionId)
+    {
+        var ok = await _repository.AddPermissionToRoleAsync(roleId, permissionId);
+        if (ok) await _repository.SaveChangesAsync();
+        return ok;
+    }
+
+    public async Task<bool> RemovePermissionAsync(int roleId, int permissionId)
+    {
+        var ok = await _repository.RemovePermissionFromRoleAsync(roleId, permissionId);
+        if (ok) await _repository.SaveChangesAsync();
+        return ok;
     }
 }

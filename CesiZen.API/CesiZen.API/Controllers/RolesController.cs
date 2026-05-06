@@ -7,7 +7,7 @@ namespace CesiZen.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Admin")]
+[Authorize]
 public class RolesController : ControllerBase
 {
     private readonly IRoleService _service;
@@ -58,5 +58,29 @@ public class RolesController : ControllerBase
     public async Task<ActionResult<IEnumerable<PermissionDto>>> GetAllPermissions()
     {
         return Ok(await _service.GetAllPermissionsAsync());
+    }
+
+    [HttpGet("{id}/permissions")]
+    public async Task<ActionResult<RoleWithPermissionsDto>> GetRolePermissions(int id)
+    {
+        var role = await _service.GetWithPermissionsAsync(id);
+        if (role == null) return NotFound();
+        return Ok(role);
+    }
+
+    [HttpPost("{id}/permissions/{permissionId}")]
+    public async Task<IActionResult> AddPermission(int id, int permissionId)
+    {
+        var ok = await _service.AddPermissionAsync(id, permissionId);
+        if (!ok) return NotFound();
+        return Ok(new { message = "Permission attribuée au rôle" });
+    }
+
+    [HttpDelete("{id}/permissions/{permissionId}")]
+    public async Task<IActionResult> RemovePermission(int id, int permissionId)
+    {
+        var ok = await _service.RemovePermissionAsync(id, permissionId);
+        if (!ok) return NotFound();
+        return Ok(new { message = "Permission retirée du rôle" });
     }
 }

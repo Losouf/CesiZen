@@ -48,6 +48,7 @@ builder.Services.AddDbContext<CesiZenContext>(options =>
 
 // Dependency Injection
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IGlobalSettingRepository, GlobalSettingRepository>();
 builder.Services.AddScoped<IGlobalSettingService, GlobalSettingService>();
@@ -70,6 +71,9 @@ builder.Services.AddScoped<IJournalEntryService, JournalEntryService>();
 
 // Roles & Permissions
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
 // UserSession
 builder.Services.AddScoped<IUserSessionRepository, UserSessionRepository>();
 builder.Services.AddScoped<IUserSessionService, UserSessionService>();
