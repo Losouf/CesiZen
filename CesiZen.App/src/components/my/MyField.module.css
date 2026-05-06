@@ -1,0 +1,81 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-left: 0.25rem;
+}
+
+.required::after {
+  content: ' *';
+  color: #ef4444;
+}
+
+.control {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-input);
+  color: var(--text-main);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  outline: none;
+  transition: var(--transition);
+  box-sizing: border-box;
+}
+
+.control:focus {
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.control:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.control::placeholder {
+  color: #94a3b8;
+}
+
+.textarea {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.error {
+  font-size: 0.8125rem;
+  color: #ef4444;
+  margin-left: 0.25rem;
+}
+
+.help {
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  margin-left: 0.25rem;
+}
+
+.colorRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.colorRow input[type="color"] {
+  width: 56px;
+  height: 44px;
+  padding: 2px;
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-input);
+  cursor: pointer;
+  background: white;
+}
