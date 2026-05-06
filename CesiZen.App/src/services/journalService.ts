@@ -1,6 +1,6 @@
 import { authService } from './authService';
 
-const API_URL = `${window.location.protocol}//${window.location.hostname}:5000/api`;
+import { API_URL } from '../config/api';
 
 export interface JournalEntry {
   id: number;
@@ -31,7 +31,7 @@ export const journalService = {
     if (!response.ok) throw new Error('Failed to fetch journal entries');
     return response.json();
   },
-  
+
   async getById(id: number): Promise<JournalEntry> {
     const token = authService.getToken();
     const response = await fetch(`${API_URL}/JournalEntries/${id}`, {
@@ -40,7 +40,7 @@ export const journalService = {
     if (!response.ok) throw new Error('Failed to fetch journal entry');
     return response.json();
   },
-  
+
   async create(data: CreateJournalEntry): Promise<JournalEntry> {
     const token = authService.getToken();
     const response = await fetch(`${API_URL}/JournalEntries`, {
@@ -51,11 +51,11 @@ export const journalService = {
       },
       body: JSON.stringify(data),
     });
-    
+
     if (!response.ok) throw new Error('Failed to create journal entry');
     return response.json();
   },
-  
+
   async update(id: number, data: UpdateJournalEntry): Promise<void> {
     const token = authService.getToken();
     const response = await fetch(`${API_URL}/JournalEntries/${id}`, {
@@ -66,17 +66,17 @@ export const journalService = {
       },
       body: JSON.stringify(data),
     });
-    
+
     if (!response.ok) throw new Error('Failed to update journal entry');
   },
-  
+
   async delete(id: number): Promise<void> {
     const token = authService.getToken();
     const response = await fetch(`${API_URL}/JournalEntries/${id}`, {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${token}` }
     });
-    
+
     if (!response.ok) throw new Error('Failed to delete journal entry');
   }
 };

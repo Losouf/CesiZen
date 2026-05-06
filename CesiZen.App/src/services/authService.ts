@@ -1,4 +1,4 @@
-const API_URL = `${window.location.protocol}//${window.location.hostname}:5000/api`;
+import { API_URL } from '../config/api';
 
 export interface AuthResponse {
   token: string;
@@ -80,9 +80,9 @@ export const authService = {
 
     const response = await fetch(`${API_URL}/auth/me`, {
       method: 'GET',
-      headers: { 
+      headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json' 
+        'Content-Type': 'application/json'
       },
     });
 

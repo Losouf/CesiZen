@@ -1,4 +1,4 @@
-const API_URL = `${window.location.protocol}//${window.location.hostname}:5000/api`;
+import { API_URL } from '../config/api';
 
 export interface InfoArticle {
   id: number;
